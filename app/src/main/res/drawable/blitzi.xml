@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="140dp"
+    android:height="180dp"
+    android:viewportWidth="140"
+    android:viewportHeight="180">
+    <!-- Blitzi: friendly lightning mascot -->
+    <!-- body/bolt -->
+    <path
+        android:pathData="M78,14 L34,90 L64,90 L52,166 L112,74 L78,74 Z"
+        android:fillColor="#FFD23F"
+        android:strokeColor="#F4A716"
+        android:strokeWidth="5"
+        android:strokeLineJoin="round" />
+    <!-- cheeks -->
+    <path
+        android:pathData="M55,74 m-7,0 a7,7 0 1,0 14,0 a7,7 0 1,0 -14,0"
+        android:fillColor="#FF8FB1"
+        android:fillAlpha="0.7" />
+    <path
+        android:pathData="M84,68 m-7,0 a7,7 0 1,0 14,0 a7,7 0 1,0 -14,0"
+        android:fillColor="#FF8FB1"
+        android:fillAlpha="0.7" />
+    <!-- eyes -->
+    <path
+        android:pathData="M58,58 m-6,0 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0"
+        android:fillColor="#FFFFFF" />
+    <path
+        android:pathData="M82,54 m-6,0 a6,6 0 1,0 12,0 a6,6 0 1,0 -12,0"
+        android:fillColor="#FFFFFF" />
+    <path
+        android:pathData="M59,58 m-3,0 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0"
+        android:fillColor="#2A2118" />
+    <path
+        android:pathData="M83,54 m-3,0 a3,3 0 1,0 6,0 a3,3 0 1,0 -6,0"
+        android:fillColor="#2A2118" />
+    <!-- smile -->
+    <path
+        android:pathData="M60,68 Q70,78 82,68"
+        android:strokeColor="#2A2118"
+        android:strokeWidth="4"
+        android:strokeLineCap="round"
+        android:fillColor="#00000000" />
+</vector>
