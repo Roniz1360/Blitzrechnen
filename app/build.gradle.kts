@@ -1,3 +1,6 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
@@ -5,9 +8,27 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization")
 }
 
+// Release-Signatur nur, wenn keystore.properties vorhanden ist (geheim, nicht im Git).
+val keystorePropsFile = rootProject.file("keystore.properties")
+val hasKeystore = keystorePropsFile.exists()
+val keystoreProps = Properties().apply {
+    if (hasKeystore) FileInputStream(keystorePropsFile).use { load(it) }
+}
+
 android {
     namespace = "ch.blitzrechnen.app"
     compileSdk = 34
+
+    signingConfigs {
+        if (hasKeystore) {
+            create("release") {
+                storeFile = rootProject.file(keystoreProps["storeFile"] as String)
+                storePassword = keystoreProps["storePassword"] as String
+                keyAlias = keystoreProps["keyAlias"] as String
+                keyPassword = keystoreProps["keyPassword"] as String
+            }
+        }
+    }
 
     defaultConfig {
         applicationId = "ch.blitzrechnen.app"
@@ -20,6 +41,7 @@ android {
 
     buildTypes {
         release {
+            if (hasKeystore) signingConfig = signingConfigs.getByName("release")
             isMinifyEnabled = false
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),

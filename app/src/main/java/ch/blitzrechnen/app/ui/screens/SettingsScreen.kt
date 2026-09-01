@@ -9,28 +9,68 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Switch
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import ch.blitzrechnen.app.data.AppState
+import ch.blitzrechnen.app.ui.components.SetPinDialog
+import ch.blitzrechnen.app.ui.components.VerifyPinDialog
 
 @Composable
 fun SettingsScreen(
     state: AppState,
     onSound: (Boolean) -> Unit,
     onTestSeconds: (Int) -> Unit,
+    onSetPin: (String) -> Unit,
+    onClearPin: () -> Unit,
     onBack: () -> Unit
 ) {
+    // Zugangssperre: bei gesetzter PIN erst entsperren
+    var unlocked by remember { mutableStateOf(!state.hasPin) }
+    if (!unlocked) {
+        VerifyPinDialog(
+            expectedHash = state.parentPinHash,
+            title = "Einstellungen – Eltern-PIN",
+            onSuccess = { unlocked = true },
+            onCancel = onBack
+        )
+    }
+
+    var showSetPin by remember { mutableStateOf(false) }
+    var showRemovePin by remember { mutableStateOf(false) }
+    if (showSetPin) {
+        SetPinDialog(
+            onSet = { onSetPin(it); showSetPin = false },
+            onCancel = { showSetPin = false }
+        )
+    }
+    if (showRemovePin) {
+        VerifyPinDialog(
+            expectedHash = state.parentPinHash,
+            title = "PIN entfernen",
+            onSuccess = { onClearPin(); showRemovePin = false },
+            onCancel = { showRemovePin = false }
+        )
+    }
+
     ScreenScaffold(title = "Einstellungen", onBack = onBack) {
+        if (!unlocked) return@ScreenScaffold
         Column(
             Modifier.fillMaxSize().padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(14.dp)
@@ -70,6 +110,43 @@ fun SettingsScreen(
                                 label = { Text("$sec s", fontWeight = FontWeight.Bold) }
                             )
                         }
+                    }
+                }
+            }
+
+            // Eltern-Bereich: PIN
+            Card(
+                shape = RoundedCornerShape(20.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Column(Modifier.padding(20.dp)) {
+                    Text("Eltern-PIN 🔒", fontWeight = FontWeight.Bold, fontSize = 18.sp)
+                    Spacer(Modifier.height(4.dp))
+                    Text(
+                        if (state.hasPin)
+                            "Aktiv. Schützt das Löschen von Profilen und die Einstellungen."
+                        else
+                            "Aus. Richte eine PIN ein, damit Kinder keine Profile löschen können.",
+                        fontSize = 14.sp,
+                        color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f)
+                    )
+                    Spacer(Modifier.height(12.dp))
+                    if (state.hasPin) {
+                        Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
+                            OutlinedButton(onClick = { showSetPin = true }) { Text("PIN ändern") }
+                            OutlinedButton(
+                                onClick = { showRemovePin = true },
+                                colors = ButtonDefaults.outlinedButtonColors(
+                                    contentColor = MaterialTheme.colorScheme.error
+                                )
+                            ) { Text("PIN entfernen") }
+                        }
+                    } else {
+                        Button(
+                            onClick = { showSetPin = true },
+                            shape = RoundedCornerShape(14.dp)
+                        ) { Text("PIN einrichten", fontWeight = FontWeight.Bold) }
                     }
                 }
             }

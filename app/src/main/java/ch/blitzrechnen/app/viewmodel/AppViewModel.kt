@@ -22,6 +22,8 @@ class AppViewModel(app: Application) : AndroidViewModel(app) {
     fun deleteProfile(id: String) = viewModelScope.launch { repo.deleteProfile(id) }
     fun setSound(on: Boolean) = viewModelScope.launch { repo.setSound(on) }
     fun setTestSeconds(sec: Int) = viewModelScope.launch { repo.setTestSeconds(sec) }
+    fun setPin(pin: String) = viewModelScope.launch { repo.setPin(pin) }
+    fun clearPin() = viewModelScope.launch { repo.clearPin() }
 
     fun recordPractice(typeId: String, correct: Int, stars: Int) = viewModelScope.launch {
         repo.recordPractice(typeId, correct)

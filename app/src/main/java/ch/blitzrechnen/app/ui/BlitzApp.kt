@@ -111,6 +111,8 @@ fun BlitzApp(vm: AppViewModel) {
                 state = state,
                 onSound = { vm.setSound(it) },
                 onTestSeconds = { vm.setTestSeconds(it) },
+                onSetPin = { vm.setPin(it) },
+                onClearPin = { vm.clearPin() },
                 onBack = { nav.popBackStack() }
             )
         }

@@ -37,6 +37,14 @@ Knöpfe, kräftige Farben, Maskottchen «Blitzi» und sofortiges Feedback.
 - **Offline** – alle Daten bleiben auf dem Gerät (DataStore).
 - Dezente Gamification: Sterne, Blitz-Abzeichen 🏅, kurze Konfetti-Belohnung.
 - Haptisches und akustisches Feedback (abschaltbar).
+- **Eltern-PIN** (SHA-256-gehasht) schützt Profil-Löschen und Einstellungen.
+
+## Sicherheit & Datenschutz
+
+- **Keine Berechtigungen**, kein Internet, keine Werbung, kein Tracking.
+- `allowBackup=false` – Kinderdaten landen nicht in Cloud-Backups.
+- Alle Daten bleiben lokal in der App-Sandbox.
+- Play-Store-fähig: signiertes App-Bundle (AAB). Details in [`RELEASE.md`](RELEASE.md).
 
 ## Technik
 

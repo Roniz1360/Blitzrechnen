@@ -34,8 +34,12 @@ data class AppState(
     val activeProfileId: String? = null,
     val soundOn: Boolean = true,
     val testSeconds: Int = 60,
-    val testCount: Int = 10
+    val testCount: Int = 10,
+    /** SHA-256-Hash der Eltern-PIN; null = keine PIN gesetzt. */
+    val parentPinHash: String? = null
 ) {
     val activeProfile: Profile?
         get() = profiles.firstOrNull { it.id == activeProfileId }
+
+    val hasPin: Boolean get() = parentPinHash != null
 }

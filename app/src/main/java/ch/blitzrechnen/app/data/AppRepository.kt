@@ -55,6 +55,9 @@ class AppRepository(private val context: Context) {
     suspend fun setSound(on: Boolean) = update { it.copy(soundOn = on) }
     suspend fun setTestSeconds(sec: Int) = update { it.copy(testSeconds = sec) }
 
+    suspend fun setPin(pin: String) = update { it.copy(parentPinHash = pinHash(pin)) }
+    suspend fun clearPin() = update { it.copy(parentPinHash = null) }
+
     /** Ergebnis einer Übungs-Runde einarbeiten. */
     suspend fun recordPractice(typeId: String, correct: Int) = updateActive { p ->
         val cur = p.forType(typeId)

@@ -58,12 +58,25 @@ fun ProfilesScreen(
     onBack: () -> Unit
 ) {
     var showCreate by remember { mutableStateOf(false) }
+    var pendingDelete by remember { mutableStateOf<String?>(null) }
     if (showCreate) {
         CreateProfileDialog(
             canCancel = true,
             onCreate = { name, avatar -> onAdd(name, avatar); showCreate = false },
             onDismiss = { showCreate = false }
         )
+    }
+    pendingDelete?.let { id ->
+        ch.blitzrechnen.app.ui.components.VerifyPinDialog(
+            expectedHash = state.parentPinHash,
+            title = "Profil löschen – Eltern-PIN",
+            onSuccess = { onDelete(id); pendingDelete = null },
+            onCancel = { pendingDelete = null }
+        )
+    }
+
+    fun requestDelete(id: String) {
+        if (state.hasPin) pendingDelete = id else onDelete(id)
     }
 
     ScreenScaffold(title = "Wer bist du?", onBack = onBack) {
@@ -92,7 +105,7 @@ fun ProfilesScreen(
                             Text("⭐ ${p.totalStars}  ·  🏅 ${p.passCount}/10",
                                 fontSize = 15.sp, color = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.7f))
                         }
-                        IconButton(onClick = { onDelete(p.id) }) {
+                        IconButton(onClick = { requestDelete(p.id) }) {
                             Icon(Icons.Filled.Delete, "Löschen", tint = MaterialTheme.colorScheme.error)
                         }
                     }
