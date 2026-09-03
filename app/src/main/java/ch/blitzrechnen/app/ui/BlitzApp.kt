@@ -107,12 +107,17 @@ fun BlitzApp(vm: AppViewModel) {
             PassScreen(state = state, onBack = { nav.popBackStack() })
         }
         composable("settings") {
+            val cloudUi by vm.cloudUi.collectAsState()
             SettingsScreen(
                 state = state,
+                cloud = cloudUi,
                 onSound = { vm.setSound(it) },
                 onTestSeconds = { vm.setTestSeconds(it) },
                 onSetPin = { vm.setPin(it) },
                 onClearPin = { vm.clearPin() },
+                onCloudRefresh = { vm.refreshCloudStatus(it) },
+                onCloudSignIn = { vm.signInCloud(it) },
+                onCloudSync = { vm.syncNow(it) },
                 onBack = { nav.popBackStack() }
             )
         }

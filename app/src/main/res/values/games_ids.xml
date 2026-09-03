@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    HIER die App-ID von Play Games Services eintragen!
+
+    So findest du sie:
+    Play Console → deine App → "Play Games Services" → "Einrichtung und Verwaltung"
+    → "Konfiguration". Die App-ID ist eine reine Zahl (z. B. 123456789012).
+
+    Solange hier der Platzhalter 0000000000 steht, bleibt der Cloud-Sync in der
+    App AUS und die App verhält sich wie bisher (komplett offline).
+-->
+<resources>
+    <string name="game_services_project_id" translatable="false">0000000000</string>
+</resources>

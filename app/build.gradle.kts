@@ -85,5 +85,9 @@ dependencies {
     implementation("androidx.datastore:datastore-preferences:1.1.1")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.3")
 
+    // Cloud-Sync über Google Play Games (Gespeicherte Spiele)
+    implementation("com.google.android.gms:play-services-games-v2:20.1.2")
+    implementation("org.jetbrains.kotlinx:kotlinx-coroutines-play-services:1.8.1")
+
     debugImplementation("androidx.compose.ui:ui-tooling")
 }

@@ -7,6 +7,7 @@ import androidx.datastore.preferences.core.edit
 import androidx.datastore.preferences.core.stringPreferencesKey
 import androidx.datastore.preferences.preferencesDataStore
 import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.flow.map
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
@@ -85,6 +86,20 @@ class AppRepository(private val context: Context) {
         s.copy(profiles = s.profiles.map {
             if (it.id == active.id) it.copy(totalStars = it.totalStars + count) else it
         })
+    }
+
+    /** Aktueller gespeicherter Zustand (für Cloud-Sicherung). */
+    suspend fun currentState(): AppState = context.dataStore.data.map { prefs ->
+        prefs[stateKey]?.let {
+            runCatching { json.decodeFromString<AppState>(it) }.getOrNull()
+        } ?: AppState()
+    }.first()
+
+    /** Cloud-Stand einarbeiten (zusammenführen) und speichern; gibt das Ergebnis zurück. */
+    suspend fun mergeAndSave(cloud: AppState): AppState {
+        var result = AppState()
+        update { local -> mergeStates(local, cloud).also { result = it } }
+        return result
     }
 
     private suspend fun updateActive(transform: (Profile) -> Map<String, ExerciseProgress>) = update { s ->

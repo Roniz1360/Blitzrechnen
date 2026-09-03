@@ -41,9 +41,14 @@ Knöpfe, kräftige Farben, Maskottchen «Blitzi» und sofortiges Feedback.
 
 ## Sicherheit & Datenschutz
 
-- **Keine Berechtigungen**, kein Internet, keine Werbung, kein Tracking.
+- Standardmässig **komplett offline**: keine Werbung, kein Tracking; alle Daten
+  bleiben lokal in der App-Sandbox.
 - `allowBackup=false` – Kinderdaten landen nicht in Cloud-Backups.
-- Alle Daten bleiben lokal in der App-Sandbox.
+- **Eltern-PIN** schützt Profil-Löschen und Einstellungen.
+- **Optionaler Cloud-Sync** (Google Play Games) für den Fortschritt über mehrere
+  Geräte – liegt im PIN-geschützten Eltern-Bereich und ist erst aktiv, wenn eine
+  Play-Games-App-ID hinterlegt und ein Konto angemeldet ist. Erst dann nutzt die
+  App die Internet-Berechtigung. Einrichtung: [`CLOUD_SYNC.md`](CLOUD_SYNC.md).
 - Play-Store-fähig: signiertes App-Bundle (AAB). Details in [`RELEASE.md`](RELEASE.md).
 
 ## Technik
