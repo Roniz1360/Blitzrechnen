@@ -51,6 +51,7 @@ import ch.blitzrechnen.app.ui.components.HundredField
 import ch.blitzrechnen.app.ui.components.NumberPad
 import ch.blitzrechnen.app.ui.theme.Coral
 import ch.blitzrechnen.app.ui.theme.Grass
+import ch.blitzrechnen.app.util.SoundFeedback
 import ch.blitzrechnen.app.viewmodel.AppViewModel
 import kotlinx.coroutines.delay
 
@@ -97,19 +98,13 @@ fun PlayScreen(
     }
 
     fun playSound(ok: Boolean) {
-        try {
+        runCatching {
             view.performHapticFeedback(
                 if (ok) android.view.HapticFeedbackConstants.VIRTUAL_KEY
                 else android.view.HapticFeedbackConstants.LONG_PRESS
             )
-            if (state.soundOn) {
-                val tg = android.media.ToneGenerator(android.media.AudioManager.STREAM_MUSIC, 70)
-                tg.startTone(
-                    if (ok) android.media.ToneGenerator.TONE_PROP_ACK
-                    else android.media.ToneGenerator.TONE_PROP_NACK, 150
-                )
-            }
-        } catch (_: Exception) { }
+        }
+        SoundFeedback.play(ok, state.soundOn)
     }
 
     fun advance() {
