@@ -1,0 +1,35 @@
+{
+  "expo": {
+    "name": "Zahlenblitz",
+    "slug": "zahlenblitz",
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "scheme": "zahlenblitz",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#6D3BF5"
+    },
+    "assetBundlePatterns": ["**/*"],
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "ch.blitzrechnen.app",
+      "infoPlist": {
+        "ITSAppUsesNonExemptEncryption": false
+      }
+    },
+    "android": {
+      "package": "ch.blitzrechnen.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/adaptive-icon.png",
+        "backgroundColor": "#6D3BF5"
+      },
+      "permissions": []
+    },
+    "web": {
+      "favicon": "./assets/icon.png"
+    }
+  }
+}

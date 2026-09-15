@@ -1,5 +1,10 @@
 # ⚡ Zahlenblitz
 
+> **Plattformübergreifend (iOS + Android):** Die neue gemeinsame Code-Basis liegt in
+> [`expo/`](expo/) (Expo / React Native). Bauen & Veröffentlichen ohne Mac:
+> [`STORE_BUILD.md`](STORE_BUILD.md). Das native Kotlin-Projekt unten bleibt als Referenz.
+
+
 Eine Android-App zum **Kopfrechnen-Training für die 2. Klasse** (Zahlenraum bis 100),
 angelehnt an das Blitzrechnen-Konzept aus dem *Schweizer Zahlenbuch* und passend zum
 **Lehrplan 21** (Kanton Aargau, Ende Zyklus 1). Gemacht für 7-jährige Kinder: grosse
