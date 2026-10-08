@@ -1,7 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, Dimensions, StyleSheet, View, Easing } from 'react-native';
 
-const COLORS = ['#FFD23F', '#6D3BF5', '#10B981', '#EF6C6C', '#3B82F6', '#EC4899'];
+const COLORS = ['#FFD23F', '#FF8A3D', '#22C08A', '#7C5CFF', '#FF6B9A', '#38BDF8'];
 
 interface Piece { x: number; delay: number; color: string; size: number; drift: number; }
 

@@ -21,6 +21,10 @@ export interface Profile {
   avatar: string;
   totalStars: number;
   progress: Record<string, ExerciseProgress>;
+  /** Anzahl Tage in Folge mit mindestens einer Runde. */
+  streak?: number;
+  /** Letzter Spieltag als YYYY-MM-DD (lokal). */
+  lastPlayDay?: string;
 }
 
 export interface AppState {
@@ -46,6 +50,33 @@ export function passCount(p: Profile): number {
 
 export function progressFor(p: Profile | undefined, typeId: string): ExerciseProgress {
   return p?.progress[typeId] ?? emptyProgress();
+}
+
+/** Heutiges Datum als YYYY-MM-DD (lokale Zeit). */
+export function dayKey(d: Date = new Date()): string {
+  const m = `${d.getMonth() + 1}`.padStart(2, '0');
+  const day = `${d.getDate()}`.padStart(2, '0');
+  return `${d.getFullYear()}-${m}-${day}`;
+}
+
+function yesterdayKey(): string {
+  const d = new Date();
+  d.setDate(d.getDate() - 1);
+  return dayKey(d);
+}
+
+/** Neue Serie nach einer gespielten Runde heute. */
+export function bumpStreak(p: Profile): { streak: number; lastPlayDay: string } {
+  const today = dayKey();
+  if (p.lastPlayDay === today) return { streak: p.streak ?? 1, lastPlayDay: today };
+  const streak = p.lastPlayDay === yesterdayKey() ? (p.streak ?? 0) + 1 : 1;
+  return { streak, lastPlayDay: today };
+}
+
+/** Aktuelle Serie für die Anzeige (0, wenn gestern und heute nicht gespielt). */
+export function currentStreak(p: Profile | undefined): number {
+  if (!p?.lastPlayDay) return 0;
+  return p.lastPlayDay === dayKey() || p.lastPlayDay === yesterdayKey() ? (p.streak ?? 0) : 0;
 }
 
 // ---- Persistenz (offline, auf dem Gerät) ----

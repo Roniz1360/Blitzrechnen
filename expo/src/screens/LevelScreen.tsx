@@ -1,41 +1,48 @@
 import React from 'react';
-import { View, Text, Pressable, StyleSheet } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import { Props } from '../navigation';
 import { exerciseById, Levels } from '../models';
-import { Screen } from '../components/ui';
+import { Screen, ChunkyButton } from '../components/ui';
 import { Mascot } from '../components/Mascot';
 import { Stars } from '../components/Stars';
-import { Colors, Radius } from '../theme';
+import { ChevronIcon } from '../components/Icons';
+import { Colors, Radius, Fonts } from '../theme';
 
 export function LevelScreen({ navigation, route }: Props<'Level'>) {
   const { typeId, mode } = route.params;
   const type = exerciseById(typeId)!;
 
   return (
-    <Screen title={type.title} headerColor={type.color} onBack={() => navigation.goBack()}>
-      <Mascot message={type.description} size={84} />
+    <Screen title={type.title} subtitle={mode === 'test' ? 'Blitz-Test' : 'Üben'} onBack={() => navigation.goBack()}>
+      <View style={styles.mascotBox}>
+        <Mascot message={type.description} size={96} />
+      </View>
       <Text style={styles.q}>Wie schwer soll es sein?</Text>
       {Levels.map((lvl) => (
-        <Pressable key={lvl.id} style={styles.card} onPress={() => navigation.navigate('Play', { typeId, mode, level: lvl.id })}>
-          <View style={[styles.badge, { backgroundColor: type.color + '2E' }]}>
-            <Text style={[styles.badgeNum, { color: type.color }]}>{lvl.stars}</Text>
+        <ChunkyButton
+          key={lvl.id} bg={Colors.white} edge={Colors.lilacLine} style={styles.card}
+          accessibilityLabel={lvl.label}
+          onPress={() => navigation.navigate('Play', { typeId, mode, level: lvl.id })}
+        >
+          <View style={[styles.badge, { backgroundColor: type.color }]}>
+            <Text style={styles.badgeNum}>{lvl.stars}</Text>
           </View>
-          <View style={{ flex: 1, marginLeft: 16 }}>
+          <View style={{ flex: 1, gap: 4 }}>
             <Text style={styles.label}>{lvl.label}</Text>
             <Stars filled={lvl.stars} total={3} size={18} />
           </View>
-          <Text style={[styles.play, { color: type.color }]}>▶</Text>
-        </Pressable>
+          <ChevronIcon size={28} color={type.color} />
+        </ChunkyButton>
       ))}
     </Screen>
   );
 }
 
 const styles = StyleSheet.create({
-  q: { fontWeight: '700', fontSize: 18, color: Colors.ink, textAlign: 'center' },
-  card: { flexDirection: 'row', alignItems: 'center', backgroundColor: Colors.white, borderRadius: Radius.lg, padding: 20 },
+  mascotBox: { backgroundColor: Colors.night, borderRadius: Radius.lg, padding: 14 },
+  q: { fontFamily: Fonts.display, fontSize: 20, color: Colors.ink, textAlign: 'center', marginTop: 4 },
+  card: { flexDirection: 'row', alignItems: 'center', gap: 16, borderRadius: Radius.lg, padding: 18 },
   badge: { width: 56, height: 56, borderRadius: 18, alignItems: 'center', justifyContent: 'center' },
-  badgeNum: { fontWeight: '800', fontSize: 26 },
-  label: { fontWeight: '800', fontSize: 22, color: Colors.ink },
-  play: { fontSize: 28 },
+  badgeNum: { fontFamily: Fonts.display, fontSize: 26, color: Colors.white },
+  label: { fontFamily: Fonts.display, fontSize: 22, color: Colors.ink },
 });

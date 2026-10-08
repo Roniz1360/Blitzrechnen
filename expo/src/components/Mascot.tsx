@@ -1,40 +1,41 @@
 import React, { useEffect, useRef } from 'react';
 import { Animated, View, Text, StyleSheet, Easing } from 'react-native';
 import Svg, { Path, Circle } from 'react-native-svg';
-import { Colors, Radius } from '../theme';
+import { Colors, Fonts } from '../theme';
 
-/** Blitzi – freundliches Blitz-Maskottchen (SVG) mit sanfter Wackel-Animation. */
-export function Mascot({ message, size = 96, animate = true }: { message?: string; size?: number; animate?: boolean }) {
-  const rot = useRef(new Animated.Value(0)).current;
+/** Blitzi – fröhliche Gewitterwolke mit Blitz, schwebt sanft auf und ab. */
+export function Mascot({ message, size = 110, animate = true }: { message?: string; size?: number; animate?: boolean }) {
+  const bob = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
     if (!animate) return;
     const loop = Animated.loop(
       Animated.sequence([
-        Animated.timing(rot, { toValue: 1, duration: 900, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
-        Animated.timing(rot, { toValue: -1, duration: 900, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
+        Animated.timing(bob, { toValue: 1, duration: 1300, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
+        Animated.timing(bob, { toValue: 0, duration: 1300, easing: Easing.inOut(Easing.ease), useNativeDriver: true }),
       ])
     );
     loop.start();
     return () => loop.stop();
-  }, [animate, rot]);
+  }, [animate, bob]);
 
-  const rotate = rot.interpolate({ inputRange: [-1, 1], outputRange: ['-6deg', '6deg'] });
+  const translateY = bob.interpolate({ inputRange: [0, 1], outputRange: [0, -6] });
   const w = size;
-  const h = size * (180 / 140);
+  const h = size * (104 / 118);
 
   return (
     <View style={styles.row}>
-      <Animated.View style={{ transform: [{ rotate }] }}>
-        <Svg width={w} height={h} viewBox="0 0 140 180">
-          <Path d="M78,14 L34,90 L64,90 L52,166 L112,74 L78,74 Z" fill={Colors.sunny} stroke="#F4A716" strokeWidth={5} strokeLinejoin="round" />
-          <Circle cx={55} cy={74} r={7} fill="#FF8FB1" opacity={0.7} />
-          <Circle cx={84} cy={68} r={7} fill="#FF8FB1" opacity={0.7} />
-          <Circle cx={58} cy={58} r={6} fill="#FFFFFF" />
-          <Circle cx={82} cy={54} r={6} fill="#FFFFFF" />
-          <Circle cx={59} cy={58} r={3} fill="#2A2118" />
-          <Circle cx={83} cy={54} r={3} fill="#2A2118" />
-          <Path d="M60,68 Q70,78 82,68" stroke="#2A2118" strokeWidth={4} strokeLinecap="round" fill="none" />
+      <Animated.View style={{ transform: [{ translateY }] }}>
+        <Svg width={w} height={h} viewBox="0 0 118 104">
+          <Path d="M28 70 C10 70 6 48 22 42 C20 22 44 14 54 28 C62 10 92 12 94 36 C112 36 114 70 92 70 Z" fill="#FFFFFF" />
+          <Circle cx={46} cy={48} r={5} fill={Colors.night} />
+          <Circle cx={72} cy={48} r={5} fill={Colors.night} />
+          <Circle cx={47.5} cy={46.5} r={1.6} fill="#FFFFFF" />
+          <Circle cx={73.5} cy={46.5} r={1.6} fill="#FFFFFF" />
+          <Path d="M50 58 Q59 66 68 58" stroke={Colors.night} strokeWidth={3.5} fill="none" strokeLinecap="round" />
+          <Circle cx={38} cy={57} r={4} fill="#FFB4C8" />
+          <Circle cx={80} cy={57} r={4} fill="#FFB4C8" />
+          <Path d="M62 68 L50 88 L60 88 L54 104 L74 80 L63 80 L70 68 Z" fill={Colors.sunny} stroke="#F5A400" strokeWidth={2} strokeLinejoin="round" />
         </Svg>
       </Animated.View>
       {message ? (
@@ -47,11 +48,11 @@ export function Mascot({ message, size = 96, animate = true }: { message?: strin
 }
 
 const styles = StyleSheet.create({
-  row: { flexDirection: 'row', alignItems: 'center' },
+  row: { flexDirection: 'row', alignItems: 'flex-end', gap: 10 },
   bubble: {
-    flex: 1, marginLeft: 8, backgroundColor: Colors.white, borderRadius: Radius.md,
-    paddingHorizontal: 16, paddingVertical: 12,
-    shadowColor: '#000', shadowOpacity: 0.12, shadowRadius: 4, shadowOffset: { width: 0, height: 2 }, elevation: 3,
+    flex: 1, marginBottom: 28, backgroundColor: Colors.white,
+    borderTopLeftRadius: 20, borderTopRightRadius: 20, borderBottomRightRadius: 20, borderBottomLeftRadius: 4,
+    paddingHorizontal: 14, paddingVertical: 12,
   },
-  bubbleText: { fontSize: 17, fontWeight: '700', color: Colors.ink },
+  bubbleText: { fontFamily: Fonts.displaySemi, fontSize: 18, lineHeight: 23, color: Colors.night },
 });

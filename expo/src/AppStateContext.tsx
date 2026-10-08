@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useEffect, useState, useCallback, ReactNode } from 'react';
 import {
   AppState, Profile, ExerciseProgress, emptyProgress,
-  initialState, loadState, saveState,
+  initialState, loadState, saveState, bumpStreak,
 } from './storage';
 import { pinHash } from './pin';
 
@@ -55,7 +55,7 @@ export function AppProvider({ children }: { children: ReactNode }) {
         ...s,
         profiles: s.profiles.map((p) =>
           p.id === s.activeProfileId
-            ? { ...p, progress: fn(p), totalStars: p.totalStars + stars }
+            ? { ...p, progress: fn(p), totalStars: p.totalStars + stars, ...bumpStreak(p) }
             : p
         ),
       };

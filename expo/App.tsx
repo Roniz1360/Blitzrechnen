@@ -4,6 +4,9 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { SafeAreaProvider } from 'react-native-safe-area-context';
 import { View, ActivityIndicator } from 'react-native';
+import { useFonts } from 'expo-font';
+import { Fredoka_600SemiBold, Fredoka_700Bold } from '@expo-google-fonts/fredoka';
+import { Nunito_700Bold, Nunito_800ExtraBold } from '@expo-google-fonts/nunito';
 
 import { AppProvider, useApp } from './src/AppStateContext';
 import { RootStackParamList } from './src/navigation';
@@ -21,16 +24,18 @@ const Stack = createNativeStackNavigator<RootStackParamList>();
 
 function Root() {
   const { ready } = useApp();
-  if (!ready) {
+  const [fontsLoaded, fontError] = useFonts({ Fredoka_600SemiBold, Fredoka_700Bold, Nunito_700Bold, Nunito_800ExtraBold });
+  // Bei Schrift-Fehler trotzdem starten (System-Schrift als Ersatz)
+  if (!ready || (!fontsLoaded && !fontError)) {
     return (
-      <View style={{ flex: 1, backgroundColor: Colors.blitz, alignItems: 'center', justifyContent: 'center' }}>
+      <View style={{ flex: 1, backgroundColor: Colors.night, alignItems: 'center', justifyContent: 'center' }}>
         <ActivityIndicator color={Colors.white} size="large" />
       </View>
     );
   }
   return (
     <NavigationContainer>
-      <Stack.Navigator screenOptions={{ headerShown: false }}>
+      <Stack.Navigator screenOptions={{ headerShown: false, animation: 'slide_from_right', contentStyle: { backgroundColor: Colors.night } }}>
         <Stack.Screen name="Home" component={HomeScreen} />
         <Stack.Screen name="Profiles" component={ProfilesScreen} />
         <Stack.Screen name="Pick" component={PickScreen} />
